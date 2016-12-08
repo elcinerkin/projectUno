@@ -1,36 +1,40 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Video from 'react-html5video';
+import Search from './Components/Search.js';
 import YoutubePlayer from 'react-youtube-player';
+import YTSearch from 'youtube-api-search';
+
+const options = {apiKey:"AIzaSyAGtX0a8ICU-ih6JysuKlOke64BXhG8ysA"};
 
 class App extends Component {
-  
+
   render() {
-    var names = ['Jake', 'Jon', 'Thruster'];
+    var ids = [1, 2, 3];
+
+    var test = function(a){console.log('a',a);};
+
+    YTSearch({options:options}, test );
 
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>React app</h2>
+          <h2>Capstone React App</h2>
         </div>
-        <p className="App-intro">
-          Capstone project editing <code>src/App.js</code> and save to reload.
-        </p>
-
+        <Search />
         <div className="playerContainer">
-            {names.map(function(name, index){
+            {ids.map(function(id, index){
               return <YoutubePlayer
               key={ index }
               className="player"
               videoId='LKFuXETZUsI'
               playbackState='playing'
               configuration={
-                  {
-                      showinfo: 0,
-                      controls: 0
-                  }
+                {
+                  showinfo: 0,
+                  controls: 0
+                }
               }/>
             })}
         </div>

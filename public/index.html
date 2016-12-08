@@ -4,28 +4,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>React App</title>
   </head>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+
+  <script>
+
+    var OAUTH2_CLIENT_ID = '22982815740-78r5pdr3p6rlqpr010sn3cub4hkst220.apps.googleusercontent.com';
+    var OAUTH2_SCOPES = ['https://www.googleapis.com/auth/youtube'];
+
+    // Upon loading, the Google APIs JS client automatically invokes this callback.
+    googleApiClientReady = function() {
+      gapi.auth.init(function() {
+        window.setTimeout(checkAuth, 1);
+      });
+    }
+
+    function checkAuth() {
+      gapi.auth.authorize({
+        client_id: OAUTH2_CLIENT_ID,
+        scope: OAUTH2_SCOPES,
+        immediate: false
+      }, handleAuthResult);
+    }
+
+    function handleAuthResult(authResult) {
+      if (authResult && !authResult.error) {
+        // Authorization was successful. Hide authorization prompts and show
+        // content that should be visible after authorization succeeds.
+        $('.pre-auth').hide();
+        $('.post-auth').show();
+        loadAPIClientInterfaces();
+      } else {
+        // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
+        // client flow. The current function is called when that flow completes.
+        $('#login-link').click(function() {
+          gapi.auth.authorize({
+            client_id: OAUTH2_CLIENT_ID,
+            scope: OAUTH2_SCOPES,
+            immediate: false
+            }, handleAuthResult);
+        });
+      }
+    }
+
+    function loadAPIClientInterfaces() {
+      gapi.client.load('youtube', 'v3', function() {
+        handleAPILoaded();
+      });
+    }
+
+    function handleAPILoaded() {
+      $('#search-button').attr('disabled', false);
+    }
+
+    // Search for a specified string.
+    function search() {
+      var q = $('#query').val();
+      var request = gapi.client.youtube.search.list({
+        q: q,
+        part: 'snippet'
+      });
+
+      request.execute(function(response) {
+        console.log('response', response);
+        // var str = JSON.stringify(response.result);
+        // $('#search-container').html('<pre>' + str + '</pre>');
+      });
+    }
+
+    gapi.load('client', googleApiClientReady);
+
+  </script>
+
   <body>
+    <div>
+      <title>Search</title>
+    </div>
+    <div>
+      <div id="buttons">
+        <label> <input id="query" value='cats' type="text"/><button id="search-button" onClick="search()">Search</button></label>
+      </div>
+      <div id="search-container"></div>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    </div>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start`.
-      To create a production bundle, use `npm run build`.
-    -->
   </body>
 </html>
