@@ -10,9 +10,12 @@ const options = {apiKey:"AIzaSyAGtX0a8ICU-ih6JysuKlOke64BXhG8ysA"};
 class App extends Component {
 
   render() {
-    var ids = [1, 2, 3];
+    var ids = [];
 
-    var test = function(a){console.log('a',a);};
+    var test = function(a){
+      ids = a ;
+       console.log('videos',a); 
+     };
 
     YTSearch({options:options}, test );
 
@@ -28,7 +31,7 @@ class App extends Component {
               return <YoutubePlayer
               key={ index }
               className="player"
-              videoId='LKFuXETZUsI'
+              videoId={ id.id.videoId }
               playbackState='playing'
               configuration={
                 {
