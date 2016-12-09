@@ -2,16 +2,29 @@
   /*text-align: center;*/
 }
 
+body{
+  background-color: #ccc;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
+input{
+  margin:10px;
+  font-size:large;
+}
+
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 70px;
   padding: 20px;
   color: white;
+}
+
+b{
+  font-size: xx-large;
 }
 
 .App-intro {
@@ -28,13 +41,18 @@ div {
 }
 
 .playerContainer {
-  width: 300px;
-  height: 600px;
+  height: 800px;
+  float:left;
 }
 
 .player {
-    width: 150px;
-    height: 150px;
+    width: 350px;
+    height:200px;
+    height: 1250px;
     outline: 1px solid;
     float: left;
+}
+
+YoutubePlayer{
+  float:left;
 }

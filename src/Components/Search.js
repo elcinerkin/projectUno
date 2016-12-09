@@ -4,7 +4,6 @@ import $ from 'jquery';
 import YoutubePlayer from 'react-youtube-player';
 
 const options = {apiKey:"AIzaSyAGtX0a8ICU-ih6JysuKlOke64BXhG8ysA"};
-const ids = [];
 
 class Search extends Component {
 
@@ -21,18 +20,11 @@ class Search extends Component {
     return { data: null };
   }
 
-  componentDidMount() {
-    // $.get('http://foobar.io/api/v1/listings/categories/').done(function(data) {
-    //   this.setState({data: data});
-    // }.bind(this));
-  }
-
   handleChange(event) {
     this.setState({value: event.target.value});
   }
 
   submit(a) {
-    // var ids = a;
     this.setState({data:a}).bind(this);
   }
 
@@ -42,11 +34,19 @@ class Search extends Component {
   }
 
   render() {
-    // var ids =[];
-    console.log('data',this.state.data);
     if (!this.state.data) {
-
       return (
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Search 
+            <input id="query" type="text" value={this.state.value} onChange={this.handleChange}/>
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      );
+    } else {
+      return (
+        <div>
         <form onSubmit={this.handleSubmit}>
           <label>
             Search 
@@ -54,9 +54,6 @@ class Search extends Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-      );
-    } else {
-      return (
         <div className="playerContainer">
             {this.state.data.map(function(id, index){
               return <YoutubePlayer
@@ -71,6 +68,7 @@ class Search extends Component {
                 }
               }/>
             })}
+        </div>
         </div>
       );
     }
